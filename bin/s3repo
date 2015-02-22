@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+
+require 's3repo'
+require 'mercenary'

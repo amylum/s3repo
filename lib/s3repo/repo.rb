@@ -7,9 +7,10 @@ module S3Repo
     end
 
     def add_package(file)
+      upload!(file)
       package = Package.new(client: client, file: file)
-      package.upload!
       metadata.add_package(package)
+      package
     end
 
     def metadata
