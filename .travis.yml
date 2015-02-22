@@ -1,0 +1,14 @@
+language: ruby
+cache: bundler
+sudo: false
+rvm:
+- 2.1.0
+- 2.0.0
+- 1.9.3
+notifications:
+  email: false
+  irc:
+    channels:
+    - ircs://irc.oftc.net#akerl,ysalamir
+    template:
+    - '%{repository}/%{branch}/%{build_number}: %{message} -- %{build_url}'
