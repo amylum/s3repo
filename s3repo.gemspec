@@ -12,6 +12,10 @@ Gem::Specification.new do |s|
 
   s.files       = `git ls-files`.split
   s.test_files  = `git ls-files spec/*`.split
+  s.executables = ['s3repo']
+
+  s.add_dependency 'mercenary', '~> 0.3.4'
+  s.add_dependency 'aws-sdk', '~> 2.0.0'
 
   s.add_development_dependency 'rubocop', '~> 0.28.0'
   s.add_development_dependency 'rake', '~> 10.4.0'
