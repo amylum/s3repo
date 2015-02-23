@@ -16,9 +16,9 @@ module S3Repo
     private
 
     def method_missing(method, *args, &block)
-      if @api.respond_to?(method) && args.size == 1 && args.first.is_a? Hash
+      if @api.respond_to?(method) && args.size == 1 && args.first.is_a?(Hash)
         define_singleton_method(method) do |*a|
-          @api.send(method, @defaults.dup.merge! args.first)
+          @api.send(method, @defaults.dup.merge!(a.first))
         end
         send(method, new_args)
       else
