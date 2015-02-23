@@ -1,12 +1,7 @@
 module S3Repo
   ##
   # Repo object, represents an Arch repo inside an S3 bucket
-  class Repo
-    def initialize(params = {})
-      @options = params
-      fail('No bucket given') unless bucket
-    end
-
+  class Repo < Base
     def add_package(file)
       upload!(file)
       package = Package.new(client: client, name: file)
@@ -36,14 +31,6 @@ module S3Repo
       resp = client.list_objects(bucket: bucket).contents.map(&:key)
       resp.select! { |x| x.match(/.*\.pkg\.tar\.xz$/) }
       resp.map { |x| Package.new(client: client, name: x) }
-    end
-
-    def bucket
-      @bucket ||= @options[:bucket] || ENV['S3_BUCKET']
-    end
-
-    def client
-      @client ||= Client.new(bucket: bucket)
     end
   end
 end
