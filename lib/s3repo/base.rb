@@ -10,7 +10,7 @@ module S3Repo
 
     def bucket
       @bucket ||= @options[:bucket] || ENV['S3_BUCKET']
-      fail('No bucket given') unless bucket
+      fail('No bucket given') unless @bucket
     end
 
     def client
