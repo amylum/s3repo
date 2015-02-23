@@ -17,4 +17,6 @@ module S3Repo
   end
 end
 
+require 's3repo/package'
+require 's3repo/metadata'
 require 's3repo/repo'
