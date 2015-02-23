@@ -20,7 +20,7 @@ module S3Repo
         define_singleton_method(method) do |*a|
           @api.send(method, @defaults.dup.merge!(a.first))
         end
-        send(method, new_args)
+        send(method, args.first)
       else
         super
       end

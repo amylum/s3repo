@@ -10,7 +10,7 @@ module S3Repo
     end
 
     def packages
-      @packages ||= parse_packages
+      @packages = parse_packages
     end
 
     def metadata
