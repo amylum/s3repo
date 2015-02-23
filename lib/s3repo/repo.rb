@@ -14,8 +14,7 @@ module S3Repo
       package
     end
 
-    def packages(nocache = false)
-      @packages = nil if nocache
+    def packages
       @packages ||= parse_packages
     end
 
