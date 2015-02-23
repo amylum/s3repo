@@ -24,6 +24,14 @@ module S3Repo
 
     private
 
+    def upload!(file)
+      client.put_object(
+        bucket: bucket,
+        key: file,
+        body: File.open(file) { |fh| fh.read }
+      )
+    end
+
     def parse_packages
       resp = client.list_objects(bucket: bucket).contents.map(&:key)
       resp.select! { |x| x.match(/.*\.pkg\.tar\.xz$/) }
@@ -35,7 +43,7 @@ module S3Repo
     end
 
     def client
-      @client ||= S3Repo.aws_client
+      @client ||= Client.new(bucket: bucket)
     end
   end
 end

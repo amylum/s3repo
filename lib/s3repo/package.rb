@@ -15,7 +15,7 @@ module S3Repo
     end
 
     def client
-      @client ||= @options[:client] || S3Repo.aws_client
+      @client ||= @options[:client] || fail('No client attribute provided')
     end
   end
 end
