@@ -4,13 +4,14 @@ module S3Repo
   class Repo < Base
     def add_package(file)
       upload!(file)
-      package = Package.new(client: client, name: file)
+      package = Package.new(client: client, key: file)
       metadata.add_package(package)
       package
     end
 
-    def packages
-      @packages = parse_packages
+    def packages(cache = true)
+      @packages = nil unless cache
+      @packages ||= parse_packages
     end
 
     def metadata
@@ -30,7 +31,7 @@ module S3Repo
     def parse_packages
       resp = client.list_objects(bucket: bucket).contents.map(&:key)
       resp.select! { |x| x.match(/.*\.pkg\.tar\.xz$/) }
-      resp.map { |x| Package.new(client: client, name: x) }
+      resp.map { |x| Package.new(client: client, key: x) }
     end
   end
 end

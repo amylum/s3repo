@@ -4,13 +4,13 @@ module S3Repo
   class Base
     def initialize(params = {})
       @options = params
-      fail('No bucket given') unless bucket
     end
 
     private
 
     def bucket
       @bucket ||= @options[:bucket] || ENV['S3_BUCKET']
+      fail('No bucket given') unless bucket
     end
 
     def client
