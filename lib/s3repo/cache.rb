@@ -1,5 +1,6 @@
 require 'fileutils'
 require 'tempfile'
+require 'basiccache'
 
 module S3Repo
   ##
@@ -56,7 +57,7 @@ module S3Repo
       current = File.readlink(epath).split('-').last
       new = parse_etag client.head_object(key: path)
       return if new == current
-      [epath, File.readlink(epath)].each { |x| File.unlink x }
+      [File.readlink(epath), epath].each { |x| File.unlink x }
     end
 
     def cachedir

@@ -1,7 +1,13 @@
+require 'basiccache'
+
 module S3Repo
   ##
   # Repo object, represents an Arch repo inside an S3 bucket
   class Repo < Base
+    def initialize(params = {})
+      super
+    end
+
     def add_package(file)
       upload!(file)
       package = Package.new(client: client, key: file)
@@ -10,11 +16,11 @@ module S3Repo
     end
 
     def packages
-      @packages ||= parse_packages
+      meta_cache.cache { parse_packages }
     end
 
     def serve(path, recheck = true)
-      cache.serve(path, recheck)
+      file_cache.serve(path, recheck)
     end
 
     def metadata
@@ -23,8 +29,12 @@ module S3Repo
 
     private
 
-    def cache
-      @cache ||= Cache.new(client: client, tmpdir: @options[:tmpdir])
+    def file_cache
+      @file_cache ||= Cache.new(client: client, tmpdir: @options[:tmpdir])
+    end
+
+    def meta_cache
+      @meta_cache = BasicCache::TimeCache.new lifetime: 900
     end
 
     def upload!(file)
