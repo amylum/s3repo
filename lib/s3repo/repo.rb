@@ -13,7 +13,7 @@ module S3Repo
       @packages ||= parse_packages
     end
 
-    def serve_file(path, recheck = true)
+    def serve(path, recheck = true)
       cache.serve(path, recheck)
     end
 
