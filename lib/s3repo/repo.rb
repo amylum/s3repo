@@ -9,9 +9,12 @@ module S3Repo
       package
     end
 
-    def packages(cache = true)
-      @packages = nil unless cache
+    def packages
       @packages ||= parse_packages
+    end
+
+    def serve_file(path, recheck = true)
+      cache.serve(path, recheck)
     end
 
     def metadata
@@ -19,6 +22,10 @@ module S3Repo
     end
 
     private
+
+    def cache
+      @cache ||= Cache.new(client: client, tmpdir: @options[:tmpdir])
+    end
 
     def upload!(file)
       client.put_object(

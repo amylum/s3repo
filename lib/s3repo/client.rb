@@ -17,9 +17,8 @@ module S3Repo
 
     def method_missing(method, *args, &block)
       return super unless @api.respond_to?(method)
-      validate_args!(*args)
       define_singleton_method(method) do |*singleton_args|
-        params = build_args(singleton_args)
+        params = build_params(singleton_args)
         @api.send(method, params)
       end
       send(method, args.first)
