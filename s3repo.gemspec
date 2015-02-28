@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 's3repo'
-  s.version     = '0.0.1'
+  s.version     = '0.0.2'
   s.date        = Time.now.strftime('%Y-%m-%d')
 
   s.summary     = 'S3 Archlinux repo library'
