@@ -16,14 +16,20 @@ module S3Repo
     private
 
     def method_missing(method, *args, &block)
-      if @api.respond_to?(method) && args.size == 1 && args.first.is_a?(Hash)
-        define_singleton_method(method) do |*a|
-          @api.send(method, @defaults.dup.merge!(a.first))
-        end
-        send(method, args.first)
-      else
-        super
+      return super unless @api.respond_to?(method)
+      validate_args!(*args)
+      define_singleton_method(method) do |*singleton_args|
+        params = build_args(singleton_args)
+        @api.send(method, params)
       end
+      send(method, args.first)
+    end
+
+    def build_params(args)
+      fail 'Too many arguments given' if args.size > 1
+      params = args.first || {}
+      fail 'Argument must be a hash' unless params.is_a? Hash
+      @defaults.dup.merge!(params)
     end
   end
 end
