@@ -16,6 +16,10 @@ module S3Repo
       meta_cache.cache { parse_packages }
     end
 
+    def include?(key)
+      packages.find { |x| x.key == key }.nil?
+    end
+
     def serve(key)
       refresh = !key.match(/\.pkg\.tar\.xz$/)
       file_cache.serve(key, refresh)
