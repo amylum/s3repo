@@ -19,8 +19,9 @@ module S3Repo
       meta_cache.cache { parse_packages }
     end
 
-    def serve(path, recheck = true)
-      file_cache.serve(path, recheck)
+    def serve(key)
+      refresh = !path.match(/\.pkg\.tar\.xz$/)
+      file_cache.serve(key, refresh)
     end
 
     def metadata

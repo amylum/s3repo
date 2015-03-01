@@ -13,51 +13,35 @@ module S3Repo
       [partialdir, cachedir].each { |x| FileUtils.mkdir_p x }
     end
 
-    def serve(path, recheck = true)
-      epath = expand_path(path)
-      prune(path, epath) if recheck
-      download(path, epath) unless File.exist?(epath)
-      File.open(epath) { |fh| fh.read }
+    def serve(key, refresh = true)
+      path = expand_path key
+      download(key, path) if refresh || !cached?(path)
+      File.open(path) { |fh| fh.read }
     end
 
     private
 
-    def expand_path(path)
-      File.absolute_path(path, cachedir)
+    def expand_path(key)
+      File.absolute_path(key, cachedir)
     end
 
-    def cached?(epath)
-      File.exist? epath
+    def cached?(path)
+      File.exist? path
     end
 
-    def download(path, epath)
-      FileUtils.mkdir_p File.dirname(epath)
-      tmpfile, etag = safe_download(path)
-      etag_path = "#{epath}-#{etag}"
-      File.rename tmpfile.path, etag_path
-      File.symlink(etag_path, epath)
-    end
-
-    def safe_download(path)
-      tmpfile = Tempfile.create(path.split('/').last, partialdir)
-      object = client.get_object(key: path)
-      tmpfile << object.body.read
+    def download(key, path)
+      FileUtils.mkdir_p File.dirname(path)
+      tmpfile = Tempfile.create(key, partialdir)
+      object = client.get_object(
+        key: path, if_none_match: etags[key], response_target: tmpfile
+      )
       tmpfile.close
-      [tmpfile, parse_etag(object)]
+      File.rename tmpfile.path, path
+      etags[key] = object.etag
     end
 
-    def parse_etag(object)
-      tag = object.etag.gsub('"', '')
-      return tag if tag.match(/^\h+$/)
-      fail('Invalid etag')
-    end
-
-    def prune(path, epath)
-      return unless cached? epath
-      current = File.readlink(epath).split('-').last
-      new = parse_etag client.head_object(key: path)
-      return if new == current
-      [File.readlink(epath), epath].each { |x| File.unlink x }
+    def etags
+      @etags ||= {}
     end
 
     def cachedir
