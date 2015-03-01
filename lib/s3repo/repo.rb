@@ -8,12 +8,17 @@ module S3Repo
       super
     end
 
-    def add_package(file)
-      upload!(file)
+    def add_packages(paths)
+      paths.each do |path|
+        key = File.basename(path)
+        next if include? key
+        client.upload!(key, path)
+      end
+      metadata.add_packages(path)
     end
 
     def packages
-      meta_cache.cache { parse_packages }
+      package_cache.cache { parse_packages }
     end
 
     def include?(key)
@@ -27,20 +32,16 @@ module S3Repo
 
     private
 
+    def metadata
+      @metadata ||= Metadata.new(client: client, file_cache: file_cache)
+    end
+
     def file_cache
       @file_cache ||= Cache.new(client: client, tmpdir: @options[:tmpdir])
     end
 
-    def meta_cache
-      @meta_cache ||= BasicCache::TimeCache.new lifetime: 600
-    end
-
-    def upload!(file)
-      client.put_object(
-        bucket: bucket,
-        key: file,
-        body: File.open(file) { |fh| fh.read }
-      )
+    def package_cache
+      @package_cache ||= BasicCache::TimeCache.new lifetime: 600
     end
 
     def parse_packages

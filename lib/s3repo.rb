@@ -12,6 +12,7 @@ module S3Repo
 end
 
 require 's3repo/base'
+require 's3repo/metadata'
 require 's3repo/cache'
 require 's3repo/client'
 require 's3repo/repo'

@@ -1,11 +1,12 @@
 require 'fileutils'
+require 'tmpdir'
 require 'tempfile'
 
 module S3Repo
   ##
   # Cache object, stores S3 objects on disk
   class Cache < Base
-    TMPDIRS = [ENV['S3REPO_TMPDIR'], ENV['TMPDIR'], '/tmp/s3repo']
+    TMPDIRS = [ENV['S3REPO_TMPDIR'], ENV['TMPDIR'], Dir.tmpdir, '/tmp/s3repo']
 
     def initialize(params = {})
       super
@@ -13,11 +14,15 @@ module S3Repo
     end
 
     def serve(key, refresh = true)
-      path = expand_path key
-      download(key, path) if refresh || !cached?(path)
-      File.open(path) { |fh| fh.read }
+      File.open(download(key, refresh)) { |fh| fh.read }
     rescue Aws::S3::Errors::NoSuchKey
       nil
+    end
+
+    def download(key, refresh = true)
+      path = expand_path key
+      update_object(key, path) if refresh || !cached?(path)
+      path
     end
 
     private
@@ -30,17 +35,22 @@ module S3Repo
       File.exist? path
     end
 
-    def download(key, path)
+    def update_object(key, path)
       FileUtils.mkdir_p File.dirname(path)
+      object = atomic_get_object(key, path)
+      etags[key] = object.etag
+    rescue Aws::S3::Errors::NotModified
+      return
+    end
+
+    def atomic_update_object(key, path)
       tmpfile = Tempfile.create(key, partialdir)
       object = client.get_object(
         key: key, if_none_match: etags[key], response_target: tmpfile
       )
       tmpfile.close
       File.rename tmpfile.path, path
-      etags[key] = object.etag
-    rescue Aws::S3::Errors::NotModified
-      return
+      object
     end
 
     def etags

@@ -13,6 +13,10 @@ module S3Repo
       @api.respond_to?(method, include_all) || super
     end
 
+    def upload!(key, path)
+      put_object key: key, body: File.open(path) { |fh| fh.read }
+    end
+
     private
 
     def method_missing(method, *args, &block)
