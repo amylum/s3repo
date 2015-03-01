@@ -1,6 +1,5 @@
 require 'fileutils'
 require 'tempfile'
-require 'basiccache'
 
 module S3Repo
   ##

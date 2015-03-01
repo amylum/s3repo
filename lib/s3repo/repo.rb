@@ -20,8 +20,11 @@ module S3Repo
     end
 
     def serve(key)
+      return nil if meta_cache.include "!#{key}"
       refresh = !key.match(/\.pkg\.tar\.xz$/)
       file_cache.serve(key, refresh)
+    rescue Aws::S3::Errors::NoSuchKey
+      meta_cache("!#{key}") { true }
     end
 
     def metadata
