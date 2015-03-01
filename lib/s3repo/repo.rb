@@ -20,11 +20,8 @@ module S3Repo
     end
 
     def serve(key)
-      return nil if meta_cache.include "!#{key}"
       refresh = !key.match(/\.pkg\.tar\.xz$/)
       file_cache.serve(key, refresh)
-    rescue Aws::S3::Errors::NoSuchKey
-      meta_cache("!#{key}") { true }
     end
 
     def metadata
@@ -38,7 +35,7 @@ module S3Repo
     end
 
     def meta_cache
-      @meta_cache = BasicCache::TimeCache.new lifetime: 900
+      @meta_cache ||= BasicCache::TimeCache.new lifetime: 600
     end
 
     def upload!(file)

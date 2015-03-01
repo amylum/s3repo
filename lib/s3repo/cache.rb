@@ -16,6 +16,8 @@ module S3Repo
       path = expand_path key
       download(key, path) if refresh || !cached?(path)
       File.open(path) { |fh| fh.read }
+    rescue Aws::S3::Errors::NoSuchKey
+      nil
     end
 
     private
