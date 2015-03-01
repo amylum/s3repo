@@ -33,11 +33,13 @@ module S3Repo
       FileUtils.mkdir_p File.dirname(path)
       tmpfile = Tempfile.create(key, partialdir)
       object = client.get_object(
-        key: path, if_none_match: etags[key], response_target: tmpfile
+        key: key, if_none_match: etags[key], response_target: tmpfile
       )
       tmpfile.close
       File.rename tmpfile.path, path
       etags[key] = object.etag
+    rescue Aws::S3::Errors::NotModified
+      return
     end
 
     def etags

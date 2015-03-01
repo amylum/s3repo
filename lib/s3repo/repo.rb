@@ -20,7 +20,7 @@ module S3Repo
     end
 
     def serve(key)
-      refresh = !path.match(/\.pkg\.tar\.xz$/)
+      refresh = !key.match(/\.pkg\.tar\.xz$/)
       file_cache.serve(key, refresh)
     end
 
