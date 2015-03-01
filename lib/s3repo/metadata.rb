@@ -1,4 +1,5 @@
 require 'fileutils'
+require 'English'
 require 'tempfile'
 
 module S3Repo
@@ -13,7 +14,7 @@ module S3Repo
     def add_packages(paths)
       @db_path = nil
       paths.each do |path|
-        run("repo_add #{db_path} #{path}")
+        run("repo-add #{db_path} #{path}")
       end
       client.upload!('repo.db', db_path)
     end
@@ -35,8 +36,9 @@ module S3Repo
     end
 
     def download_db
-      tmpfile = Tempfile.create('repo.db', db_dir)
+      tmpfile = Tempfile.create(['repo', '.db.tar.xz'], db_dir)
       tmpfile << file_cache.serve('repo.db')
+      tmpfile.close
       tmpfile.path
     end
 

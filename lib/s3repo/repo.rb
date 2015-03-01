@@ -14,7 +14,7 @@ module S3Repo
         next if include? key
         client.upload!(key, path)
       end
-      metadata.add_packages(path)
+      metadata.add_packages(paths)
     end
 
     def packages

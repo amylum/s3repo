@@ -19,13 +19,13 @@ module S3Repo
       nil
     end
 
+    private
+
     def download(key, refresh = true)
       path = expand_path key
-      update_object(key, path) if refresh || !cached?(path)
+      get_object(key, path) if refresh || !cached?(path)
       path
     end
-
-    private
 
     def expand_path(key)
       File.absolute_path(key, cachedir)
@@ -35,7 +35,7 @@ module S3Repo
       File.exist? path
     end
 
-    def update_object(key, path)
+    def get_object(key, path)
       FileUtils.mkdir_p File.dirname(path)
       object = atomic_get_object(key, path)
       etags[key] = object.etag
@@ -43,7 +43,7 @@ module S3Repo
       return
     end
 
-    def atomic_update_object(key, path)
+    def atomic_get_object(key, path)
       tmpfile = Tempfile.create(key, partialdir)
       object = client.get_object(
         key: key, if_none_match: etags[key], response_target: tmpfile
