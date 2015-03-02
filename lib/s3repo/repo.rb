@@ -10,9 +10,9 @@ module S3Repo
 
     def build_packages(paths)
       paths.each do |path|
-        Dir.chdir(File.dirname(path)) do
-          run 'makepkg -f'
-        end
+        dir = File.dirname(path)
+        puts "Building #{File.basename(dir)}"
+        Dir.chdir(dir) { run 'makepkg -f' }
       end
     end
 

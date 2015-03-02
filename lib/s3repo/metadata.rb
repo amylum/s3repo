@@ -13,6 +13,7 @@ module S3Repo
     def add_packages(paths)
       @db_path = nil
       paths.each do |path|
+        puts "Adding #{File.basename(path)} to repo.db"
         run("repo-add #{db_path} #{path}")
       end
       client.upload!('repo.db', db_path)
