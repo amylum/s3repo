@@ -45,7 +45,7 @@ module S3Repo
     end
 
     def package_cache
-      @package_cache ||= BasicCache::TimeCache.new lifetime: 600
+      @package_cache ||= BasicCache::TimeCache.new lifetime: 60
     end
 
     def parse_packages
