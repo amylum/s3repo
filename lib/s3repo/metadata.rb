@@ -1,5 +1,4 @@
 require 'fileutils'
-require 'English'
 require 'tempfile'
 
 module S3Repo
@@ -20,16 +19,6 @@ module S3Repo
     end
 
     private
-
-    def run(cmd)
-      results = `#{cmd} 2>&1`
-      return results if $CHILD_STATUS.success?
-      fail "Failed running #{cmd}:\n#{results}"
-    end
-
-    def file_cache
-      @file_cache ||= @options[:file_cache]
-    end
 
     def db_path
       @db_path ||= download_db

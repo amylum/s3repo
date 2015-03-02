@@ -36,10 +36,6 @@ module S3Repo
       @metadata ||= Metadata.new(client: client, file_cache: file_cache)
     end
 
-    def file_cache
-      @file_cache ||= Cache.new(client: client, tmpdir: @options[:tmpdir])
-    end
-
     def package_cache
       @package_cache ||= BasicCache::TimeCache.new lifetime: 600
     end
