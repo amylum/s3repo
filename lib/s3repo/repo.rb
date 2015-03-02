@@ -8,11 +8,11 @@ module S3Repo
       super
     end
 
-    def build_packages(paths)
+    def build_packages(paths, makepkg_flags = '')
       paths.each do |path|
         dir = File.dirname(path)
         puts "Building #{File.basename(dir)}"
-        Dir.chdir(dir) { run 'makepkg --force --nodeps --clean' }
+        Dir.chdir(dir) { run "makepkg #{makepkg_flags}" }
       end
     end
 

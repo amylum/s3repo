@@ -17,7 +17,7 @@ Mercenary.program(:s3repo) do |p|
     c.description 'Build package files from PKGBUILDs'
 
     c.action do |args, _|
-      S3Repo.new.build_packages find('*/PKGBUILD', args)
+      S3Repo.new.build_packages find('*/PKGBUILD', args), ENV['MAKEPKG_FLAGS']
     end
   end
 
