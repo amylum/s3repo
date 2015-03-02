@@ -21,8 +21,8 @@ module S3Repo
         key = File.basename(path)
         sig_key, sig_path = [key, path].map { |x| x + '.sig' }
         next if include? key
+        client.upload!(sig_key, sig_path) if ENV['S3REPO_SIGN_PACKAGES']
         client.upload!(key, path)
-        client.upload!(sig_key, sig_path) if File.exist?(sig_path)
       end
       metadata.add_packages(paths)
     end

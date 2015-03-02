@@ -17,9 +17,15 @@ module S3Repo
         run("repo-add #{db_path} #{path}")
       end
       client.upload!('repo.db', db_path)
+      sign_db if ENV['S3REPO_SIGN_DB']
     end
 
     private
+
+    def sign_db
+      run "gpg --detach-sign --use-agent #{db_path}"
+      client.upload!('repo.db.sig', "#{db_path}.sig")
+    end
 
     def db_path
       @db_path ||= download_db
