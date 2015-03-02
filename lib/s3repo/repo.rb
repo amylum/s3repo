@@ -12,7 +12,7 @@ module S3Repo
       paths.each do |path|
         dir = File.dirname(path)
         puts "Building #{File.basename(dir)}"
-        Dir.chdir(dir) { run 'makepkg -f' }
+        Dir.chdir(dir) { run 'makepkg --force --nodeps --clean' }
       end
     end
 
