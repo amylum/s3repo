@@ -8,6 +8,14 @@ module S3Repo
       super
     end
 
+    def build_packages(paths)
+      paths.each do |path|
+        Dir.chdir(File.dirname(path)) do
+          run 'makepkg -f'
+        end
+      end
+    end
+
     def add_packages(paths)
       paths.each do |path|
         key = File.basename(path)
