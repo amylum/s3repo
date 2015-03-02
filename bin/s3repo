@@ -25,7 +25,7 @@ Mercenary.program(:s3repo) do |p|
     c.syntax 'upload [package...]'
     c.description 'Upload packages to repo'
 
-    c.action do
+    c.action do |args, _|
       S3Repo.new.add_packages find('*/*.pkg.tar.xz', args)
     end
   end
