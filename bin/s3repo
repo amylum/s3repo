@@ -3,26 +3,35 @@
 require 's3repo'
 require 'mercenary'
 
+def find(pattern, limits)
+  Dir.glob(pattern).select { |x| !limits || limits.include?(File.dirname(x)) }
+end
+
 Mercenary.program(:s3repo) do |p|
   p.version S3Repo::VERSION
   p.description 'Package management tool for Archlinux repos'
   p.syntax 's3repo <subcommand> [args]'
 
   p.command(:build) do |c|
-    c.syntax 'build'
+    c.syntax 'build [package...]'
     c.description 'Build package files from PKGBUILDs'
 
-    c.action do
-      S3Repo.new.build_packages Dir.glob('*/PKGBUILD')
+    c.action do |args, _|
+      S3Repo.new.build_packages find('*/PKGBUILD', args)
     end
   end
 
   p.command(:upload) do |c|
-    c.syntax 'upload'
+    c.syntax 'upload [package...]'
     c.description 'Upload packages to repo'
 
     c.action do
-      S3Repo.new.add_packages Dir.glob('*/*.pkg.tar.xz')
+      S3Repo.new.add_packages find('*/*.pkg.tar.xz', args)
     end
+  end
+
+  p.action do
+    puts p
+    exit 1
   end
 end
