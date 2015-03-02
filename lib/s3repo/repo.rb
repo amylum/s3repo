@@ -20,9 +20,8 @@ module S3Repo
       paths.each do |path|
         key = File.basename(path)
         sig_key, sig_path = [key, path].map { |x| x + '.sig' }
-        next if include? key
-        client.upload!(key, path)
-        client.upload!(sig_key, sig_path) if File.exist? sig_path
+        client.upload!(key, path) unless include?(key)
+        client.upload!(sig_key, sig_path) if File.exist?(sig_path)
       end
       metadata.add_packages(paths)
     end
