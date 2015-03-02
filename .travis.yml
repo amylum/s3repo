@@ -9,6 +9,6 @@ notifications:
   email: false
   irc:
     channels:
-    - ircs://irc.oftc.net#akerl,ysalamir
+    - irc.oftc.net#akerl
     template:
     - '%{repository}/%{branch}/%{build_number}: %{message} -- %{build_url}'
