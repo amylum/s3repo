@@ -1,6 +1,9 @@
+$:.unshift File.expand_path('../lib/', __FILE__)
+require 's3repo/version'
+
 Gem::Specification.new do |s|
   s.name        = 's3repo'
-  s.version     = '0.0.3'
+  s.version     = S3Repo::VERSION
   s.date        = Time.now.strftime('%Y-%m-%d')
 
   s.summary     = 'S3 Archlinux repo library'
