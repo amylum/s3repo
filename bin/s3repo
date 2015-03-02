@@ -13,7 +13,7 @@ Mercenary.program(:s3repo) do |p|
     c.description 'Build package files from PKGBUILDs'
 
     c.action do
-      repo.build_packages Dir.glob('*/PKGBUILD')
+      S3Repo.new.build_packages Dir.glob('*/PKGBUILD')
     end
   end
 
@@ -22,7 +22,7 @@ Mercenary.program(:s3repo) do |p|
     c.description 'Upload packages to repo'
 
     c.action do
-      repo.add_packages Dir.glob('*/*.pkg.tar.xz')
+      S3Repo.new.add_packages Dir.glob('*/*.pkg.tar.xz')
     end
   end
 end
