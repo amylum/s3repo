@@ -2,3 +2,27 @@
 
 require 's3repo'
 require 'mercenary'
+
+Mercenary.program(:s3repo) do |p|
+  p.version S3Repo::VERSION
+  p.description 'Package management tool for Archlinux repos'
+  p.syntax 's3repo <subcommand> [args]'
+
+  p.command(:build) do |c|
+    c.syntax 'build'
+    c.description 'Build package files from PKGBUILDs'
+
+    c.action do
+      repo.build_packages Dir.glob('*/PKGBUILD')
+    end
+  end
+
+  p.command(:upload) do |c|
+    c.syntax 'upload'
+    c.description 'Upload packages to repo'
+
+    c.action do
+      repo.add_packages Dir.glob('*/*.pkg.tar.xz')
+    end
+  end
+end
