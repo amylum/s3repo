@@ -21,9 +21,9 @@ Gem::Specification.new do |s|
   s.add_dependency 'aws-sdk', '~> 2.0.0'
   s.add_dependency 'basiccache', '~> 1.0.0'
 
-  s.add_development_dependency 'rubocop', '~> 0.28.0'
+  s.add_development_dependency 'rubocop', '~> 0.29.0'
   s.add_development_dependency 'rake', '~> 10.4.0'
   s.add_development_dependency 'coveralls', '~> 0.7.1'
-  s.add_development_dependency 'rspec', '~> 3.1.0'
+  s.add_development_dependency 'rspec', '~> 3.2.0'
   s.add_development_dependency 'fuubar', '~> 2.0.0'
 end
