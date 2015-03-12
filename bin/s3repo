@@ -30,6 +30,15 @@ Mercenary.program(:s3repo) do |p|
     end
   end
 
+  p.command(:remove) do |c|
+    c.syntax 'remove [package...]'
+    c.description 'Remove packages from repo DB'
+
+    c.action do |args, _|
+      S3Repo.new.remove_packages args
+    end
+  end
+
   p.action do
     puts p
     exit 1
