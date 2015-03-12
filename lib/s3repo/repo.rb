@@ -27,6 +27,10 @@ module S3Repo
       metadata.add_packages(paths)
     end
 
+    def remove_packages(packages)
+      metadata.remove_package(packages)
+    end
+
     def packages
       package_cache.cache { parse_packages }
     end

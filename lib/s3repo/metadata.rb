@@ -16,6 +16,19 @@ module S3Repo
         puts "Adding #{File.basename(path)} to repo.db"
         run("repo-add #{db_path} #{path}")
       end
+      update!
+    end
+
+    def remove_packages(packages)
+      @db_path = nil
+      packages.each do |package|
+        puts "Removing #{package} from repo.db"
+        run("repo-remove #{db_path} #{package}")
+      end
+      update!
+    end
+
+    def update!
       client.upload!('repo.db', db_path)
       sign_db if ENV['S3REPO_SIGN_DB']
     end
