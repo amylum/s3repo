@@ -28,7 +28,7 @@ module S3Repo
     end
 
     def remove_packages(packages)
-      metadata.remove_package(packages)
+      metadata.remove_packages(packages)
     end
 
     def packages
