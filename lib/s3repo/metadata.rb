@@ -29,8 +29,8 @@ module S3Repo
     end
 
     def update!
-      client.upload!('repo.db', db_path)
       sign_db if ENV['S3REPO_SIGN_DB']
+      client.upload!('repo.db', db_path)
     end
 
     private
