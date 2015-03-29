@@ -1,4 +1,5 @@
 require 'basiccache'
+require 'set'
 
 module S3Repo
   ##
@@ -31,6 +32,15 @@ module S3Repo
       metadata.remove_packages(packages)
     end
 
+    def prune_packages
+      if orphans.empty?
+        puts 'No orphaned packages'
+        return
+      end
+      puts "Pruning packages: #{orphans.join(', ')}"
+      client.delete_objects(delete: { objects: orphans.map { |x| { key: x } } })
+    end
+
     def packages
       package_cache.cache { parse_packages }
     end
@@ -45,6 +55,12 @@ module S3Repo
     end
 
     private
+
+    def orphans
+      packages.map(&:key).reject do |x|
+        metadata.packages.include? x.reverse.split('-', 2).last.reverse
+      end
+    end
 
     def metadata
       @metadata ||= Metadata.new(client: client, file_cache: file_cache)

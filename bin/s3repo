@@ -39,6 +39,15 @@ Mercenary.program(:s3repo) do |p|
     end
   end
 
+  p.command(:prune) do |c|
+    c.syntax 'prune'
+    c.description 'Prune package tarballa from the repo'
+
+    c.action do
+      S3Repo.new.prune_packages
+    end
+  end
+
   p.action do
     puts p
     exit 1

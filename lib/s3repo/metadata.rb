@@ -34,7 +34,9 @@ module S3Repo
     end
 
     def packages
-      run("tar tf #{db_path}").split.map { |x| x.split('/').first }.uniq
+      return @packages if @packages
+      cmd = "tar tf #{db_path}"
+      @packages = run(cmd).split.map { |x| x.split('/').first }.uniq
     end
 
     private
