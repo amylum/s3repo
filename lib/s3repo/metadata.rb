@@ -33,6 +33,10 @@ module S3Repo
       client.upload!('repo.db', db_path)
     end
 
+    def packages
+      run("tar tf #{db_path}").split.map { |x| x.split('/').first }.uniq
+    end
+
     private
 
     def sign_db
