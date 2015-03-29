@@ -18,6 +18,11 @@ module S3Repo
       put_object key: key, body: File.open(path) { |fh| fh.read }
     end
 
+    def remove!(key)
+      puts "Removing #{key}"
+      delete_object key: key
+    end
+
     private
 
     def method_missing(method, *args, &block)
