@@ -18,13 +18,7 @@ module S3Repo
     end
 
     def add_packages(paths)
-      paths.each do |path|
-        key = File.basename(path)
-        sig_key, sig_path = [key, path].map { |x| x + '.sig' }
-        next if include? key
-        client.upload!(sig_key, sig_path) if ENV['S3REPO_SIGN_PACKAGES']
-        client.upload!(key, path)
-      end
+      paths.select! { |path| upload_package(path) }
       metadata.add_packages(paths)
     end
 
@@ -55,6 +49,15 @@ module S3Repo
     end
 
     private
+
+    def upload_package(path)
+      key = File.basename(path)
+      sig_key, sig_path = [key, path].map { |x| x + '.sig' }
+      return false if include? key
+      client.upload!(sig_key, sig_path) if ENV['S3REPO_SIGN_PACKAGES']
+      client.upload!(key, path)
+      true
+    end
 
     def orphans
       packages.map(&:key).reject do |x|
