@@ -14,7 +14,7 @@ module S3Repo
     end
 
     def serve(key, refresh = true)
-      File.open(download(key, refresh)) { |fh| fh.read }
+      File.open(download(key, refresh), &:read)
     rescue Aws::S3::Errors::NoSuchKey
       nil
     end

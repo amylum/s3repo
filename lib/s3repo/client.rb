@@ -15,7 +15,7 @@ module S3Repo
 
     def upload!(key, path)
       puts "Uploading #{key}"
-      put_object key: key, body: File.open(path) { |fh| fh.read }
+      put_object key: key, body: File.open(path), &:read
     end
 
     private
