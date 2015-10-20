@@ -28,6 +28,6 @@ AUTH_OPTS = {
   AWS_ACCESS_KEY_ID: 'sekritkey'
 }
 def with_auth(&block)
-  opts = AUTH_OPTS.dup.map { |k, v| [k, ENV.fetch("REAL_#{k}", v)] }.to_h
-  ClimateControl.modify(opts, &block)
+  opts = AUTH_OPTS.dup.map { |k, v| [k, ENV.fetch("REAL_#{k}", v)] }
+  ClimateControl.modify(Hash[opts], &block)
 end
