@@ -25,9 +25,9 @@ describe S3Repo::Base do
   end
   describe 'bucket set in ENV' do
     it 'uses bucket from ENV' do
-      ENV['S3_BUCKET'] = 'bar'
-      expect(S3Repo::Base.new.send(:bucket)).to eql 'bar'
-      ENV.delete('S3_BUCKET')
+      ClimateControl.modify S3_BUCKET: 'bar' do
+        expect(S3Repo::Base.new.send(:bucket)).to eql 'bar'
+      end
     end
   end
   describe 'no bucket set' do
@@ -46,9 +46,10 @@ describe S3Repo::Base do
   end
   describe 'no provided client' do
     it 'creates the client' do
-      ENV['AWS_REGION'] = 'us-east-1'
-      base = S3Repo::Base.new(bucket: 'foo')
-      expect(base.send(:client)).to be_an_instance_of S3Repo::Client
+      ClimateControl.modify AWS_REGION: 'us-east-1' do
+        base = S3Repo::Base.new(bucket: 'foo')
+        expect(base.send(:client)).to be_an_instance_of S3Repo::Client
+      end
     end
   end
 
