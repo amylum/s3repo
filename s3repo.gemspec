@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
   s.executables = ['s3repo']
 
   s.add_dependency 'mercenary', '~> 0.3.4'
-  s.add_dependency 'aws-sdk', '~> 2.1.0'
+  s.add_dependency 'aws-sdk', '~> 2.2.0'
   s.add_dependency 'basiccache', '~> 1.0.0'
 
   s.add_development_dependency 'rubocop', '~> 0.35.0'
