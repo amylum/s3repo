@@ -6,7 +6,12 @@ module S3Repo
   ##
   # Cache object, stores S3 objects on disk
   class Cache < Base
-    TMPDIRS = [ENV['S3REPO_TMPDIR'], ENV['TMPDIR'], Dir.tmpdir, '/tmp/s3repo']
+    TMPDIRS = [
+      ENV['S3REPO_TMPDIR'],
+      ENV['TMPDIR'],
+      Dir.tmpdir,
+      '/tmp/s3repo'
+    ].freeze
 
     def initialize(params = {})
       super

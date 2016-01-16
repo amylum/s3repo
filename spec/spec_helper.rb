@@ -26,7 +26,7 @@ AUTH_OPTS = {
   AWS_REGION: 'us-east-1',
   AWS_SECRET_ACCESS_KEY: 'accesskey',
   AWS_ACCESS_KEY_ID: 'sekritkey'
-}
+}.freeze
 def with_auth(&block)
   opts = AUTH_OPTS.dup.map { |k, v| [k, ENV.fetch("REAL_#{k}", v)] }
   ClimateControl.modify(Hash[opts], &block)

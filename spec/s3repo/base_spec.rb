@@ -6,7 +6,7 @@ describe S3Repo::Base do
   end
 
   it 'has a private run method' do
-    expect(subject.respond_to? :run).to be_falsey
+    expect(subject.respond_to?(:run)).to be_falsey
   end
   it 'runs commands and returns their output' do
     expect(subject.send(:run, 'echo winner')).to eql "winner\n"
@@ -16,7 +16,7 @@ describe S3Repo::Base do
   end
 
   it 'has a private bucket param' do
-    expect(subject.respond_to? :bucket).to be_falsey
+    expect(subject.respond_to?(:bucket)).to be_falsey
   end
   describe 'provided bucket param' do
     it 'uses bucket from option' do
@@ -37,7 +37,7 @@ describe S3Repo::Base do
   end
 
   it 'has a private client method' do
-    expect(subject.respond_to? :client).to be_falsey
+    expect(subject.respond_to?(:client)).to be_falsey
   end
   describe 'a provided client' do
     it 'reuses the client' do
@@ -54,7 +54,7 @@ describe S3Repo::Base do
   end
 
   it 'has a private file_cache method' do
-    expect(subject.respond_to? :file_cache).to be_falsey
+    expect(subject.respond_to?(:file_cache)).to be_falsey
   end
   describe 'a provided file_cache' do
     it 'reuses the file_cache' do
