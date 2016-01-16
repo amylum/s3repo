@@ -26,17 +26,21 @@ module S3Repo
       metadata.remove_packages(packages)
     end
 
-    def prune_packages
+    def prune_files
       if orphans.empty?
-        puts 'No orphaned packages'
+        puts 'No orphaned files'
         return
       end
-      puts "Pruning packages: #{orphans.join(', ')}"
+      puts "Pruning files: #{orphans.join(', ')}"
       client.delete_objects(delete: { objects: orphans.map { |x| { key: x } } })
     end
 
     def packages
-      package_cache.cache { parse_packages }
+      package_cache.cache { parse_objects(/.*\.pkg\.tar\.xz$/) }
+    end
+
+    def signatures
+      parse_objects(/.*\.pkg\.tar\.xz\.sig$/)
     end
 
     def include?(key)
@@ -60,7 +64,7 @@ module S3Repo
     end
 
     def orphans
-      packages.map(&:key).reject do |x|
+      (packages + signatures).map(&:key).reject do |x|
         metadata.packages.include? x.reverse.split('-', 2).last.reverse
       end
     end
@@ -73,10 +77,8 @@ module S3Repo
       @package_cache ||= BasicCache::TimeCache.new lifetime: 60
     end
 
-    def parse_packages
-      client.list_objects(bucket: bucket).contents.select do |x|
-        x.key.match(/.*\.pkg\.tar\.xz$/)
-      end
+    def parse_objects(regex)
+      client.list_objects(bucket: bucket).contents.select { |x| x.key =~ regex }
     end
   end
 end

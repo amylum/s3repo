@@ -41,10 +41,10 @@ Mercenary.program(:s3repo) do |p|
 
   p.command(:prune) do |c|
     c.syntax 'prune'
-    c.description 'Prune package tarballa from the repo'
+    c.description 'Prune orphaned files from the repo'
 
     c.action do
-      S3Repo.new.prune_packages
+      S3Repo.new.prune_files
     end
   end
 
