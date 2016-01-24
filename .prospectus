@@ -6,6 +6,6 @@ item do
 
   actual do
     gemnasium
-    slug 'amylum/server'
+    slug 'amylum/s3repo'
   end
 end
