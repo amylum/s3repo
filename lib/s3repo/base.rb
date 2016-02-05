@@ -13,13 +13,13 @@ module S3Repo
     def run(cmd)
       results = `#{cmd} 2>&1`
       return results if $CHILD_STATUS.success?
-      fail "Failed running #{cmd}:\n#{results}"
+      raise "Failed running #{cmd}:\n#{results}"
     end
 
     def bucket
       @bucket ||= @options[:bucket] || ENV['S3_BUCKET']
       return @bucket if @bucket
-      fail('No bucket given')
+      raise('No bucket given')
     end
 
     def client

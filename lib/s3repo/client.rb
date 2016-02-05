@@ -30,9 +30,9 @@ module S3Repo
     end
 
     def build_params(args)
-      fail 'Too many arguments given' if args.size > 1
+      raise 'Too many arguments given' if args.size > 1
       params = args.first || {}
-      fail 'Argument must be a hash' unless params.is_a? Hash
+      raise 'Argument must be a hash' unless params.is_a? Hash
       @defaults.dup.merge!(params)
     end
   end
