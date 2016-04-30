@@ -10,6 +10,9 @@ end
 require 'rspec'
 require 's3repo'
 
+require 'webmock'
+WebMock.enable!
+
 require 'vcr'
 VCR.configure do |c|
   c.cassette_library_dir = 'spec/fixtures/cassettes'
