@@ -9,7 +9,7 @@ module S3Repo
       @defaults = params
     end
 
-    def respond_to?(method, include_all = false)
+    def respond_to_missing?(method, include_all = false)
       @api.respond_to?(method, include_all) || super
     end
 
