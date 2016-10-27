@@ -7,6 +7,7 @@ def find(pattern, limits)
   Dir.glob(pattern).select { |x| !limits || limits.include?(File.dirname(x)) }
 end
 
+# rubocop:disable Metrics/BlockLength
 Mercenary.program(:s3repo) do |p|
   p.version S3Repo::VERSION
   p.description 'Package management tool for Archlinux repos'
