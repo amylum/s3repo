@@ -28,5 +28,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'fuubar', '~> 2.2.0'
   s.add_development_dependency 'webmock', '~> 2.3.0'
   s.add_development_dependency 'vcr', '~> 3.0.0'
-  s.add_development_dependency 'climate_control', '~> 0.0.3'
+  s.add_development_dependency 'climate_control', '~> 0.1.0'
 end
