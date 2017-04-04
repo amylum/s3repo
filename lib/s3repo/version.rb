@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 ##
 # Define version
 module S3Repo
