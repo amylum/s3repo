@@ -1,5 +1,6 @@
 require 'spec_helper'
 
+# rubocop:disable Metrics/BlockLength
 describe S3Repo::Cache do
   it 'serves a file', vcr: { cassette_name: 'cache' } do
     with_auth do

@@ -1,5 +1,6 @@
 require 'spec_helper'
 
+# rubocop:disable Metrics/BlockLength
 describe S3Repo::Base do
   it 'accepts a parameter hash' do
     expect(S3Repo::Base.new({})).to be_an_instance_of S3Repo::Base
