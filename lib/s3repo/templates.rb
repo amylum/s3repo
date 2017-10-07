@@ -46,7 +46,7 @@ module S3Repo
   # Binding object to sandbox template vars
   class TemplateBinding
     def initialize(params = {})
-      params.each { |key, val| instance_variable_set(":@#{key}", val) }
+      params.each { |key, val| instance_variable_set("@#{key}", val) }
     end
 
     def binding
