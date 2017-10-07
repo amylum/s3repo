@@ -10,7 +10,7 @@ module S3Repo
 
     def update!
       templates.each do |filename, template|
-        rendered = template.render(template_binding.load_binding)
+        rendered = template.result(template_binding.load_binding)
         client.upload(filename, rendered)
       end
     end
