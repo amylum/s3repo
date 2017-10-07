@@ -7,7 +7,6 @@ module S3Repo
   class Metadata < Base
     def initialize(params = {})
       super
-      FileUtils.mkdir_p db_dir
     end
 
     def add_packages(paths)
