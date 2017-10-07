@@ -9,7 +9,7 @@ def find(pattern, limits)
 end
 
 def common_opts(cmd)
-  cmd.options :config_file, '-c', '--config FILE', 'Path of config file'
+  cmd.option :config_file, '-c', '--config FILE', 'Path of config file'
 end
 
 def load_config(file)
