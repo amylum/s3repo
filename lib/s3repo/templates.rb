@@ -18,7 +18,7 @@ module S3Repo
     private
 
     def metadata
-      @options[:metadata] || raise('Templates requires metadata')
+      @options[:metadata] ||= Metadata.new(@options)
     end
 
     def template_binding
