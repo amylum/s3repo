@@ -3,6 +3,7 @@
 require 's3repo'
 require 'mercenary'
 require 'yaml'
+require 'cymbal'
 
 def find(pattern, limits)
   Dir.glob(pattern).select { |x| !limits || limits.include?(File.dirname(x)) }
