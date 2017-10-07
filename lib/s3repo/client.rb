@@ -5,7 +5,7 @@ module S3Repo
   # AWS API client
   class Client
     def initialize(params = {})
-      @api = Aws::S3::Client.new
+      @api = Aws::S3::Client.new(region: region)
       @defaults = params
     end
 
@@ -23,6 +23,10 @@ module S3Repo
     end
 
     private
+
+    def region
+      @options[:region] || raise('AWS region not set')
+    end
 
     def method_missing(method, *args, &block)
       return super unless @api.respond_to?(method)
