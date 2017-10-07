@@ -10,7 +10,7 @@ module S3Repo
 
     def update!
       templates.each do |filename, template|
-        rendered = template.render(template_binding.binding)
+        rendered = template.render(template_binding.load_binding)
         client.upload(filename, rendered)
       end
     end
@@ -49,7 +49,7 @@ module S3Repo
       params.each { |key, val| instance_variable_set("@#{key}", val) }
     end
 
-    def binding
+    def load_binding
       binding
     end
   end
