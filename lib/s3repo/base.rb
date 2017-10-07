@@ -21,7 +21,7 @@ module S3Repo
     end
 
     def client
-      @options[:client] ||= Client.new(bucket: bucket)
+      @options[:client] ||= Client.new(@options)
     end
 
     def file_cache

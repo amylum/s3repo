@@ -5,8 +5,8 @@ module S3Repo
   # AWS API client
   class Client
     def initialize(params = {})
+      @options = params
       @api = Aws::S3::Client.new(region: region)
-      @defaults = params
     end
 
     def respond_to_missing?(method, include_all = false)
@@ -28,6 +28,10 @@ module S3Repo
       @options[:region] || raise('AWS region not set')
     end
 
+    def bucket
+      @options[:bucket] || raise('Bucket not set')
+    end
+
     def method_missing(method, *args, &block)
       return super unless @api.respond_to?(method)
       define_singleton_method(method) do |*singleton_args|
@@ -41,7 +45,8 @@ module S3Repo
       raise 'Too many arguments given' if args.size > 1
       params = args.first || {}
       raise 'Argument must be a hash' unless params.is_a? Hash
-      @defaults.dup.merge!(params)
+      params[:bucket] ||= bucket
+      params
     end
   end
 end
