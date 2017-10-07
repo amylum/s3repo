@@ -29,7 +29,7 @@ module S3Repo
 
     def templates
       @templates ||= template_files.map do |x|
-        [File.basename(x), ERB.new(File.read(x), 3, '-']
+        [File.basename(x), ERB.new(File.read(x), 3, '-')]
       end
     end
 
