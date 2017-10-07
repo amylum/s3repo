@@ -37,7 +37,7 @@ Mercenary.program(:s3repo) do |p|
     c.description 'Build package files from PKGBUILDs'
 
     c.action do |args, opts|
-      repo(opts).new.build_packages find('*/PKGBUILD', args)
+      repo(opts).build_packages find('*/PKGBUILD', args)
     end
   end
 
@@ -47,7 +47,7 @@ Mercenary.program(:s3repo) do |p|
     c.description 'Upload packages to repo'
 
     c.action do |args, opts|
-      repo(opts).new.add_packages find('*/*.pkg.tar.xz', args)
+      repo(opts).add_packages find('*/*.pkg.tar.xz', args)
     end
   end
 
@@ -57,7 +57,7 @@ Mercenary.program(:s3repo) do |p|
     c.description 'Remove packages from repo DB'
 
     c.action do |args, opts|
-      repo(opts).new.remove_packages args
+      repo(opts).remove_packages args
     end
   end
 
@@ -67,7 +67,7 @@ Mercenary.program(:s3repo) do |p|
     c.description 'Prune orphaned files from the repo'
 
     c.action do |_, opts|
-      repo(opts).new.prune_files
+      repo(opts).prune_files
     end
   end
 
