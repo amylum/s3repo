@@ -9,21 +9,23 @@ module S3Repo
       super
     end
 
-    def build_packages(paths, makepkg_flags = '')
+    def build_packages(paths)
       paths.each do |path|
         dir = File.dirname(path)
         puts "Building #{File.basename(dir)}"
-        Dir.chdir(dir) { run "makepkg #{makepkg_flags}" }
+        Dir.chdir(dir) { run "makepkg #{@options[:makepkg_flags]}" }
       end
     end
 
     def add_packages(paths)
       paths.select! { |path| upload_package(path) }
       metadata.add_packages(paths) unless paths.empty?
+      templates.update!
     end
 
     def remove_packages(packages)
       metadata.remove_packages(packages)
+      templates.update!
     end
 
     def prune_files
@@ -47,19 +49,14 @@ module S3Repo
       !packages.find { |x| x.key == key }.nil?
     end
 
-    def serve(key)
-      refresh = !key.match(/\.pkg\.tar\.xz$/)
-      file_cache.serve(key, refresh)
-    end
-
     private
 
     def upload_package(path)
       key = File.basename(path)
       sig_key, sig_path = [key, path].map { |x| x + '.sig' }
       return false if include? key
-      client.upload!(sig_key, sig_path) if ENV['S3REPO_SIGN_PACKAGES']
-      client.upload!(key, path)
+      client.upload_file(sig_key, sig_path) if @options[:sign_packages]
+      client.upload_file(key, path)
       true
     end
 
@@ -70,7 +67,11 @@ module S3Repo
     end
 
     def metadata
-      @metadata ||= Metadata.new(client: client, file_cache: file_cache)
+      @options[:metadata] ||= Metadata.new(@options)
+    end
+
+    def templates
+      @templates ||= Templates.new(@options)
     end
 
     def package_cache

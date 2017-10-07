@@ -29,8 +29,8 @@ module S3Repo
     end
 
     def update!
-      sign_db if ENV['S3REPO_SIGN_DB']
-      client.upload!('repo.db', db_path)
+      sign_db if @options[:sign_db]
+      client.upload_file('repo.db', db_path)
     end
 
     def packages
@@ -43,24 +43,11 @@ module S3Repo
 
     def sign_db
       run "gpg --detach-sign --use-agent #{db_path}"
-      client.upload!('repo.db.sig', "#{db_path}.sig")
+      client.upload_file('repo.db.sig', "#{db_path}.sig")
     end
 
     def db_path
-      @db_path ||= download_db
-    end
-
-    def download_db
-      tmpfile = Tempfile.create(['repo', '.db.tar.xz'], db_dir)
-      tmpfile << file_cache.serve('repo.db')
-      tmpfile.close
-      tmpfile.path
-    end
-
-    def db_dir
-      @db_dir ||= File.absolute_path(
-        @options[:tmpdir] || Cache::TMPDIRS.compact.first
-      )
+      @db_path ||= file_cache.download('repo.db')
     end
   end
 end

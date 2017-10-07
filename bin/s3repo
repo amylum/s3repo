@@ -2,9 +2,26 @@
 
 require 's3repo'
 require 'mercenary'
+require 'yaml'
 
 def find(pattern, limits)
   Dir.glob(pattern).select { |x| !limits || limits.include?(File.dirname(x)) }
+end
+
+def common_opts(cmd)
+  cmd.options :config_file, '-c', '--config FILE', 'Path of config file'
+end
+
+def load_config(file)
+  file ||= 'config.yml'
+  file = File.expand_path(file)
+  raise("Config file not found: #{file}") unless File.exist? file
+  Cymbal.symbolize YAML.safe_load(File.read(file))
+end
+
+def repo(options)
+  config = load_config(options[:config_file])
+  S3Repo.new(config)
 end
 
 # rubocop:disable Metrics/BlockLength
@@ -14,38 +31,42 @@ Mercenary.program(:s3repo) do |p|
   p.syntax 's3repo <subcommand> [args]'
 
   p.command(:build) do |c|
+    common_opts(c)
     c.syntax 'build [package...]'
     c.description 'Build package files from PKGBUILDs'
 
-    c.action do |args, _|
-      S3Repo.new.build_packages find('*/PKGBUILD', args), ENV['MAKEPKG_FLAGS']
+    c.action do |args, opts|
+      repo(opts).new.build_packages find('*/PKGBUILD', args)
     end
   end
 
   p.command(:upload) do |c|
+    common_opts(c)
     c.syntax 'upload [package...]'
     c.description 'Upload packages to repo'
 
-    c.action do |args, _|
-      S3Repo.new.add_packages find('*/*.pkg.tar.xz', args)
+    c.action do |args, opts|
+      repo(opts).new.add_packages find('*/*.pkg.tar.xz', args)
     end
   end
 
   p.command(:remove) do |c|
+    common_opts(c)
     c.syntax 'remove [package...]'
     c.description 'Remove packages from repo DB'
 
-    c.action do |args, _|
-      S3Repo.new.remove_packages args
+    c.action do |args, opts|
+      repo(opts).new.remove_packages args
     end
   end
 
   p.command(:prune) do |c|
+    common_opts(c)
     c.syntax 'prune'
     c.description 'Prune orphaned files from the repo'
 
-    c.action do
-      S3Repo.new.prune_files
+    c.action do |_, opts|
+      repo(opts).new.prune_files
     end
   end
 

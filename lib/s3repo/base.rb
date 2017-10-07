@@ -17,19 +17,15 @@ module S3Repo
     end
 
     def bucket
-      @bucket ||= @options[:bucket] || ENV['S3_BUCKET']
-      return @bucket if @bucket
-      raise('No bucket given')
+      @options[:bucket] || raise('No bucket given')
     end
 
     def client
-      @client ||= @options[:client] || Client.new(bucket: bucket)
+      @options[:client] ||= Client.new(bucket: bucket)
     end
 
     def file_cache
-      @file_cache ||= @options[:file_cache] || Cache.new(
-        client: client, tmpdir: @options[:tmpdir]
-      )
+      @file_cache ||= @options[:file_cache] || Cache.new(@options)
     end
   end
 end

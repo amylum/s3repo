@@ -13,9 +13,13 @@ module S3Repo
       @api.respond_to?(method, include_all) || super
     end
 
-    def upload!(key, path)
+    def upload(key, body)
       puts "Uploading #{key}"
-      put_object key: key, body: File.open(path), &:read
+      put_object key: key, body: body
+    end
+
+    def upload_file(key, path)
+      upload(key, File.open(path).read)
     end
 
     private

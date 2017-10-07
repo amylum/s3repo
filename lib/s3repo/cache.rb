@@ -7,7 +7,6 @@ module S3Repo
   # Cache object, stores S3 objects on disk
   class Cache < Base
     TMPDIRS = [
-      ENV['S3REPO_TMPDIR'],
       ENV['TMPDIR'],
       Dir.tmpdir,
       '/tmp/s3repo'
@@ -18,18 +17,16 @@ module S3Repo
       [partialdir, cachedir].each { |x| FileUtils.mkdir_p x }
     end
 
-    def serve(key, refresh = true)
-      File.open(download(key, refresh), &:read)
-    rescue Aws::S3::Errors::NoSuchKey
-      nil
-    end
-
-    private
-
     def download(key, refresh = true)
       path = expand_path key
       get_object(key, path) if refresh || !cached?(path)
       path
+    end
+
+    private
+
+    def file_cache
+      raise('Tried to call file_cache recursively')
     end
 
     def expand_path(key)
