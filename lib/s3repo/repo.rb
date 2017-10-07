@@ -20,7 +20,7 @@ module S3Repo
     def add_packages(paths)
       paths.select! { |path| upload_package(path) }
       metadata.add_packages(paths) unless paths.empty?
-      templates.update!
+      templates.update! unless paths.empty?
     end
 
     def remove_packages(packages)
