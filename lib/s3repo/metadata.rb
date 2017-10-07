@@ -30,6 +30,7 @@ module S3Repo
     def update!
       sign_db if @options[:sign_db]
       client.upload_file('repo.db', db_path)
+      client.upload_file('repo.db.tar.xz', db_path)
     end
 
     def packages
@@ -43,10 +44,11 @@ module S3Repo
     def sign_db
       run "gpg --detach-sign --use-agent #{db_path}"
       client.upload_file('repo.db.sig', "#{db_path}.sig")
+      client.upload_file('repo.db.tar.xz.sig', "#{db_path}.sig")
     end
 
     def db_path
-      @db_path ||= file_cache.download('repo.db')
+      @db_path ||= file_cache.download('repo.db.tar.xz')
     end
   end
 end
