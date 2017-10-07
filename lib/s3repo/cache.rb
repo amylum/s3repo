@@ -68,6 +68,10 @@ module S3Repo
     end
 
     def tmpdir
+      Dir.mktmpdir 's3repo', tmpdir_root
+    end
+
+    def tmpdir_root
       @tmpdir ||= File.absolute_path(@options[:tmpdir] || TMPDIRS.compact.first)
     end
   end
