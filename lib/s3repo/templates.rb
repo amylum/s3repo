@@ -4,10 +4,6 @@ module S3Repo
   ##
   # Templates object, represents the generated templates for repo navigation
   class Templates < Base
-    def initialize(params = {})
-      super
-    end
-
     def update!
       templates.each do |filename, template|
         rendered = template.result(template_binding.load_binding)

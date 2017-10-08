@@ -13,6 +13,7 @@ end
 
 require 's3repo/version'
 require 's3repo/base'
+require 's3repo/signer'
 require 's3repo/metadata'
 require 's3repo/cache'
 require 's3repo/client'

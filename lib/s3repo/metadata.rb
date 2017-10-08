@@ -5,10 +5,6 @@ module S3Repo
   ##
   # Metadata object, represents repo's DB file
   class Metadata < Base
-    def initialize(params = {})
-      super
-    end
-
     def add_packages(paths)
       @db_path = nil
       paths.each do |path|
@@ -41,10 +37,14 @@ module S3Repo
 
     private
 
+    def signer
+      @options[:signer] ||= Signer.new(@options)
+    end
+
     def sign_db
-      run "gpg --detach-sign --use-agent #{db_path}"
-      client.upload_file('repo.db.sig', "#{db_path}.sig")
-      client.upload_file('repo.db.tar.xz.sig', "#{db_path}.sig")
+      sig_path = signer.sign(db_path)
+      client.upload_file('repo.db.sig', sig_path)
+      client.upload_file('repo.db.tar.xz.sig', sig_path)
     end
 
     def db_path

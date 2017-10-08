@@ -5,10 +5,6 @@ module S3Repo
   ##
   # Repo object, represents an Arch repo inside an S3 bucket
   class Repo < Base
-    def initialize(params = {})
-      super
-    end
-
     def build_packages(paths)
       paths.each do |path|
         dir = File.dirname(path)
@@ -53,8 +49,9 @@ module S3Repo
 
     def upload_package(path)
       key = File.basename(path)
-      sig_key, sig_path = [key, path].map { |x| x + '.sig' }
       return false if include? key
+      sig_path = signer.sign(path)
+      sig_key = key + '.sig'
       client.upload_file(sig_key, sig_path) if @options[:sign_packages]
       client.upload_file(key, path)
       true
@@ -68,6 +65,10 @@ module S3Repo
 
     def metadata
       @options[:metadata] ||= Metadata.new(@options)
+    end
+
+    def signer
+      @options[:signer] ||= Signer.new(@options)
     end
 
     def templates
