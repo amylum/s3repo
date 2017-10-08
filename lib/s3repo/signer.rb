@@ -4,7 +4,7 @@ module S3Repo
   class Signer < Base
     def sign(path)
       sig_path = path + '.sig'
-      run "gpg --detach-sign --local-user '#{key}' #{db_path}"
+      run "gpg --detach-sign --local-user '#{key}' #{path}"
       sig_path
     end
 
