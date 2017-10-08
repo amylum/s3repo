@@ -42,7 +42,7 @@ module S3Repo
 
     def db_names
       @db_names ||= ['repo', repo_name].flat_map do |x|
-        [x + '.db', x + '.db.tar.xz']
+        [x + '.db.tar.xz', x + '.db']
       end
     end
 
