@@ -12,18 +12,26 @@ Simple library for interacting with an Archlinux repo stored in S3
 
 ## Usage
 
-### From the command line
+The canonical usage of this tool is by [my personal repo](https://github.com/amylum/repo/blob/master/Makefile), which uses s3repo.
 
-This tool provides an `s3repo` script that can be used to manage an S3 bucket with packages. It is configured via environment variable:
+### Config file
 
-* AWS_ACCESS_KEY_ID -- Used by the AWS API library to authenticate for the S3 bucket
-* AWS_SECRET_ACCESS_KEY -- Used by the AWS API library to authenticate for the S3 bucket
-* AWS_REGION -- Used by the AWS API library to know which region to use for the bucket
-* S3_BUCKET -- Controls which S3 bucket is used for packages
-* MAKEPKG_FLAGS -- Flags used for makepkg calls when building packages
-* S3REPO_TMPDIR -- Sets the temp path for local cache of metadata files. Optional, otherwise looks up a path from the system
-* S3REPO_SIGN_DB -- Set to sign the DB metadata
-* S3REPO_SIGN_PACKAGES -- Set to sign the packages
+The config file is used to provide information about the repo:
+
+```
+repo_name: # this is used to name the metadata DB file for the repo
+bucket: # where to upload the files
+region: # what AWS region the bucket is in
+makepkg_flags: # any flags to pass to makepkg
+key: # GPG key ID to use for signing, assuming that signing is enabled
+sign_db: # true/false to control signing
+sign_packages: # true/false to control signing
+template_dir: # where to find repo templates
+template_params: # a key-value store of details to use in the templates
+  example_key: example_value
+```
+
+### Managing the repo
 
 #### Build a package
 
@@ -56,20 +64,6 @@ This removes any files from S3 that aren't referenced in the metadata DB.
 ```
 s3repo prune
 ```
-
-### From Ruby code
-
-I use this primarily for serving the packages using [amylum/server](https://github.com/amylum/server). Like the command line tool, it expects AWS API credentials via environment variables, but you can pass in the bucket using either environmnt or a parameter when creating your S3Repo object:
-
-```
-repo = S3Repo.new(bucket: 'my_bucket')
-```
-
-You can call build_packages, add_packages, remove_packages, and prune_files on this, which work almost exactly as their command line counterparts above.
-
-The library also offers `.packages` and `.signatures`, which return arrays of packages and signatures in the bucket. You can use `.include? 'package_name'` to check for a package.
-
-To get the contents of a file, call `.serve 'package_name'`.
 
 ## Installation
 
