@@ -18,18 +18,18 @@ Gem::Specification.new do |s|
   s.test_files  = `git ls-files spec/*`.split
   s.executables = ['s3repo']
 
-  s.add_dependency 'mercenary', '~> 0.3.4'
   s.add_dependency 'aws-sdk', '~> 3.0.0'
   s.add_dependency 'basiccache', '~> 1.0.0'
   s.add_dependency 'cymbal', '~> 1.0.0'
+  s.add_dependency 'mercenary', '~> 0.3.4'
 
-  s.add_development_dependency 'rubocop', '~> 0.51.0'
+  s.add_development_dependency 'climate_control', '~> 0.2.0'
+  s.add_development_dependency 'codecov', '~> 0.1.1'
+  s.add_development_dependency 'fuubar', '~> 2.2.0'
   s.add_development_dependency 'goodcop', '~> 0.1.0'
   s.add_development_dependency 'rake', '~> 12.1.0'
-  s.add_development_dependency 'codecov', '~> 0.1.1'
   s.add_development_dependency 'rspec', '~> 3.7.0'
-  s.add_development_dependency 'fuubar', '~> 2.2.0'
-  s.add_development_dependency 'webmock', '~> 3.1.0'
+  s.add_development_dependency 'rubocop', '~> 0.51.0'
   s.add_development_dependency 'vcr', '~> 3.0.0'
-  s.add_development_dependency 'climate_control', '~> 0.2.0'
+  s.add_development_dependency 'webmock', '~> 3.1.0'
 end
