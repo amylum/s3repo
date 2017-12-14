@@ -76,3 +76,4 @@ Mercenary.program(:s3repo) do |p|
     exit 1
   end
 end
+# rubocop:enable Metrics/BlockLength
