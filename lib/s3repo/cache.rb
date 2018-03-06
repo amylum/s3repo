@@ -42,7 +42,6 @@ module S3Repo
       object = atomic_get_object(key, path)
       etags[key] = object.etag
     rescue Aws::S3::Errors::NotModified
-      return
     end
 
     def atomic_get_object(key, path)
