@@ -41,7 +41,7 @@ module S3Repo
       FileUtils.mkdir_p File.dirname(path)
       object = atomic_get_object(key, path)
       etags[key] = object.etag
-    rescue Aws::S3::Errors::NotModified
+    rescue Aws::S3::Errors::NotModified # rubocop:disable Lint/HandleExceptions
     end
 
     def atomic_get_object(key, path)
