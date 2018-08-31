@@ -1,0 +1,14 @@
+dist: trusty
+env:
+  global:
+  - AWS_ACCESS_KEY_ID=1
+  - AWS_SECRET_ACCESS_KEY=1
+install:
+- for i in $(cat .circle-ruby) ; do rvm install $i || exit 1 ; done
+- for i in $(cat .circle-ruby) ; do rvm-exec $i bundle install || exit 1 ; done
+script:
+- for i in $(cat .circle-ruby) ; do rvm-exec $i bundle exec rake || exit 1 ; done
+notifications:
+  email: false
+  slack:
+    secure: m6Lp+oABqFhRL7ytxRwm5K5N3OzOUb8tS7ivejcYxJ173oo+l1yqJ6TzoykNpKEkGqsW+0DXQqALhX88dbg9JfExUKiLZt0O7o1uRB2SPxNBhv6k4d7jV19gwi2Ab17BHSZKHVmEqnysS/tYlnh5EqdBo1IwPFFcMmrTjPPfMzdcOOvS9tO+nh0XsTbIQtODP2Qn8tddZXgihbHggZ6BRnL7yiOdzv41EbKNB1Z28Fc3dxGHGA+FF2FIm3zeeAAWIIwStd3CGaCtt2sotlbrYlypAbyC9ZIpf4PZh6x6Hwo+dDt6sdfwh1lYWV+sxTafxcH8UODG6h+QZKGrtAWe6YuHg3xBy/9cBT3Nhtm7JuBpTCXvn2ZomD1IYn4caGMOBmBF4Ofsv31pJTL+WmbU3pEsMIPbntwinN1dwFmtccbGWPT1qYXrG3pxm7wWC4zX8tRD53omHpkJHtDfFXGsi320R8Anss06fOr1Kv5ZOGX8MYKjR0I+TIsZZ03RDHA4OWj3evfT8b6Zr6SdZVSQ4vz0NXaxjWr6RAPHjHQs/qVZE89mGeL+NqqcVgNrCDYl7E1eBgPo6jdFVdXI3mvgKqCR4MBZf/EkI3PLvgAsszigrwGG62vjfatxJmOpmLzq6zgcB2ZYD6B3NNyPkAxNm7pkbfIqk6/nz0TyLu57CQo=
