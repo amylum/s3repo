@@ -20,7 +20,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'aws-sdk', '~> 3.0.0'
   s.add_dependency 'basiccache', '~> 1.0.0'
-  s.add_dependency 'cymbal', '~> 1.0.0'
+  s.add_dependency 'cymbal', '~> 2.0.0'
   s.add_dependency 'mercenary', '~> 0.3.4'
 
   s.add_development_dependency 'climate_control', '~> 0.2.0'
