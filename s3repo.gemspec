@@ -5,7 +5,8 @@ require 's3repo/version'
 Gem::Specification.new do |s|
   s.name        = 's3repo'
   s.version     = S3Repo::VERSION
-  s.date        = Time.now.strftime('%Y-%m-%d')
+
+  s.required_ruby_version = '>= 3.0'
 
   s.summary     = 'S3 Archlinux repo library'
   s.description = 'Simple library for interacting with Archlinux repos in S3'
@@ -15,7 +16,6 @@ Gem::Specification.new do |s|
   s.license     = 'MIT'
 
   s.files       = `git ls-files`.split
-  s.test_files  = `git ls-files spec/*`.split
   s.executables = ['s3repo']
 
   s.add_dependency 'aws-sdk', '~> 3.1.0'
@@ -24,4 +24,5 @@ Gem::Specification.new do |s|
   s.add_dependency 'mercenary', '~> 0.4.0'
 
   s.add_development_dependency 'goodcop', '~> 0.9.7'
+  s.metadata['rubygems_mfa_required'] = 'true'
 end

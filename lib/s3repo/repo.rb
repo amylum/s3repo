@@ -55,7 +55,7 @@ module S3Repo
       key = File.basename(path)
       return false if include? key
       sig_path = signer.sign(path)
-      sig_key = key + '.sig'
+      sig_key = "#{key}.sig"
       client.upload_file(sig_key, sig_path) if @options[:sign_packages]
       client.upload_file(key, path)
       true

@@ -25,12 +25,12 @@ module S3Repo
 
     def templates
       @templates ||= template_files.map do |x|
-        [File.basename(x), ERB.new(File.read(x), nil, '-')]
+        [File.basename(x), ERB.new(File.read(x), trim_mode: '-')]
       end
     end
 
     def template_files
-      @template_files ||= Dir.glob(template_path + '/*')
+      @template_files ||= Dir.glob("#{template_path}/*")
     end
 
     def template_path

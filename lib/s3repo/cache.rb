@@ -7,7 +7,7 @@ module S3Repo
   # Cache object, stores S3 objects on disk
   class Cache < Base
     TMPDIRS = [
-      ENV['TMPDIR'],
+      ENV.fetch('TMPDIR', nil),
       Dir.tmpdir,
       '/tmp/s3repo'
     ].freeze
@@ -41,7 +41,7 @@ module S3Repo
       FileUtils.mkdir_p File.dirname(path)
       object = atomic_get_object(key, path)
       etags[key] = object.etag
-    rescue Aws::S3::Errors::NotModified # rubocop:disable Lint/HandleExceptions
+    rescue Aws::S3::Errors::NotModified # rubocop:disable Lint/SuppressedException
     end
 
     def atomic_get_object(key, path)

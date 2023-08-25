@@ -19,7 +19,7 @@ module S3Repo
     end
 
     def upload_file(key, path)
-      upload(key, File.open(path).read)
+      upload(key, File.read(path))
     end
 
     private

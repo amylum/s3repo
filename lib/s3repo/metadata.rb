@@ -42,12 +42,12 @@ module S3Repo
 
     def db_names
       @db_names ||= ['repo', repo_name].flat_map do |x|
-        [x + '.db.tar.xz', x + '.db']
+        ["#{x}.db.tar.xz", "#{x}.db"]
       end
     end
 
     def sig_names
-      @sig_names ||= db_names.map { |x| x + '.sig' }
+      @sig_names ||= db_names.map { |x| "#{x}.sig" }
     end
 
     def signer
