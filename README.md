@@ -2,9 +2,7 @@ s3repo
 =========
 
 [![Gem Version](https://img.shields.io/gem/v/s3repo.svg)](https://rubygems.org/gems/s3repo)
-[![Build Status](https://img.shields.io/travis/com/amylum/s3repo.svg)](https://travis-ci.com/amylum/s3repo)
-[![Coverage Status](https://img.shields.io/codecov/c/github/amylum/s3repo.svg)](https://codecov.io/github/amylum/s3repo)
-[![Code Quality](https://img.shields.io/codacy/eef971ff937642219c1d4094001c33e7.svg)](https://www.codacy.com/app/akerl/s3repo)
+[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/amylum/s3repo/build.yml?branch=main)](https://github.com/amylum/s3repo/actions)
 [![MIT Licensed](https://img.shields.io/badge/license-MIT-green.svg)](https://tldrlegal.com/license/mit-license)
 
 Simple library for interacting with an Archlinux repo stored in S3
