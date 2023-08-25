@@ -16,6 +16,10 @@ module S3Repo
       raise "Failed running #{cmd}:\n#{results}"
     end
 
+    def targets
+      @targets ||= @options[:targets] || ['x86_64']
+    end
+
     def bucket
       @options[:bucket] || raise('No bucket given')
     end

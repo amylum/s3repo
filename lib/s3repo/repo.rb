@@ -9,7 +9,11 @@ module S3Repo
       paths.each do |path|
         dir = File.dirname(path)
         puts "Building #{File.basename(dir)}"
-        Dir.chdir(dir) { run "makepkg #{@options[:makepkg_flags]}" }
+        Dir.chdir(dir) do
+          targets.each do |x|
+            run "CARCH='#{x}' makepkg #{@options[:makepkg_flags]}"
+          end
+        end
       end
     end
 
