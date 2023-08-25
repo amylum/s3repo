@@ -1,3 +1,7 @@
+# 3.0.1 / 2023-08-24
+
+* [BUGFIX] Fix linter errors
+
 # 3.0.0 / 2023-08-24
 
 * [FEATURE] Support multiple build targets

@@ -3,5 +3,5 @@
 ##
 # Define version
 module S3Repo
-  VERSION = '3.0.0'
+  VERSION = '3.0.1'
 end
