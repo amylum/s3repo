@@ -1,3 +1,7 @@
+# 3.0.0 / 2023-08-24
+
+* [FEATURE] Support multiple build targets
+
 # 2.0.3 / 2017-10-08
 
 * [DEPRECATION] The features for directly serving files have been removed
