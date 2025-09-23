@@ -51,7 +51,7 @@ module S3Repo
 
     private
 
-    def upload_package(path)
+    def upload_package(path) # rubocop:disable Naming/PredicateMethod
       key = File.basename(path)
       return false if include? key
       sig_path = signer.sign(path)
