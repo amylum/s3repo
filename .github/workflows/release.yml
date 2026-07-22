@@ -1,0 +1,17 @@
+---
+name: Release
+'on':
+  push:
+    tags:
+    - "**"
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    steps:
+    - name: Run base CI
+      uses: akerl/.github/actions/base-ruby@main
+    - name: Release
+      run: bundle exec rake release
+      env:
+        GEM_HOST_API_KEY: "${{ secrets.GEM_HOST_API_KEY }}"
