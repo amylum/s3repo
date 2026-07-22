@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
   s.files       = `git ls-files`.split
   s.executables = ['s3repo']
 
-  s.add_dependency 'aws-sdk', '~> 3.1.0'
+  s.add_dependency 'aws-sdk', '>= 3.1', '< 3.4'
   s.add_dependency 'basiccache', '~> 1.0.0'
   s.add_dependency 'cymbal', '~> 2.0.0'
   s.add_dependency 'mercenary', '~> 0.4.0'
